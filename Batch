@@ -1,0 +1,39 @@
+@echo off
+title Encrypt, decrypt, compress, decompress and Hash
+
+REM Switch Key
+:start
+	if %1 ==-h (
+		goto hash_file )
+	if %1 ==-e (
+		goto encrypt_file )
+	if %1 ==-d (
+		goto decrypt_file )
+	if %1 ==-c (
+		goto compress_file )
+	if %1 ==-x (
+		goto decompress_file )
+		
+REM Getting the Hash Number
+:hash_file
+	certutil -hashfile %2 sha256
+	goto end
+
+REM Encrypt a File
+:encrypt_file
+	aescrypt -e -o %2 %3 
+	goto end
+
+REM Decrypt a file
+:decrypt_file
+	aescrypt -d -o %2 %3
+	goto end
+REM Compress a file	
+:compress_file
+	tar.exe -a -c -f %2 %3
+
+REM Decompress a file
+:decompress_file
+	tar.exe -x -f %2
+
+:end
